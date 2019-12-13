@@ -10,9 +10,19 @@
 import Game from "./components/game/Game";
 import Main from "./components/main/Main";
 import Shop from "./components/shop/Shop";
+import { mixin as VueTimers } from "vue-timers";
 import "@/assets/style.scss";
+import { mapActions } from "vuex";
 export default {
-  components: { Shop, Main, Game }
+  mixins: [VueTimers],
+  components: { Shop, Main, Game },
+  methods: {
+    ...mapActions(["updateCounter","saveGame"])
+  },
+  timers: {
+    updateCounter: { time: 1000, autostart: true, repeat: true },
+    saveGame: { time: 10000, autostart: true, repeat: true }
+  }
 };
 </script>
 

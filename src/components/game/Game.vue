@@ -28,8 +28,13 @@ export default {
 <style lang="scss">
 .game {
   background: orangered;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   &__count {
     font-size: 24px;
+    text-align: center;
   }
 }
 </style>

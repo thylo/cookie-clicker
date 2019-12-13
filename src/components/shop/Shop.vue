@@ -9,7 +9,7 @@ export default {
 </script>
 
 <style scoped>
-  .shop{
-    background: orangered;
-  }
+.shop {
+  background: orangered;
+}
 </style>

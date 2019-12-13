@@ -1,32 +1,29 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div id="app" class="game-container">
+    <Game class="game-container__section"></Game>
+    <Main class="game-container__section"></Main>
+    <Shop class="game-container__section"></Shop>
   </div>
 </template>
 
+<script>
+import Game from "./components/game/Game";
+import Main from "./components/main/Main";
+import Shop from "./components/shop/Shop";
+import "@/assets/style.scss";
+export default {
+  components: { Shop, Main, Game }
+};
+</script>
+
 <style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+.game-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  &__section {
+    flex: 1;
   }
 }
 </style>

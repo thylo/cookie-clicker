@@ -1,14 +1,19 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    {{ownedUpgrades}}
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 
+import {mapGetters} from "vuex";
+
 export default {
   name: "home",
-  components: {}
+  components: {},
+  computed: {
+    ...mapGetters(["ownedUpgrades"])
+  }
 };
 </script>

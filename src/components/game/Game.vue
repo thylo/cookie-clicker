@@ -4,6 +4,9 @@
       <p>You have killed</p>
       <p class="game__count">{{ count }}</p>
       <p>Zombie</p>
+      <p>
+        <small>{{ label }}</small>
+      </p>
     </div>
     <button @click="incrementBy(1)">Kill zombie</button>
   </div>
@@ -20,7 +23,10 @@ export default {
     ])
   },
   computed: {
-    ...mapGetters(["count"])
+    ...mapGetters(["count", "hitsPerSecond"]),
+    label() {
+      return `${this.hitsPerSecond} per second`;
+    }
   }
 };
 </script>

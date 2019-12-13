@@ -4,39 +4,44 @@ import upgrades from "../items/upgrades";
 
 Vue.use(Vuex);
 
-const defaultState = {
+const state = {
   counter: 0,
-  hitsPerSecond: 1,
-  owned: []
+  hitsPerSecond: 0,
+  upgrades
 };
-/*
-const previousState = localStorage.getItem("game");
-const state = previousState ? JSON.parse(previousState) : defaultState;
-*/
 
 export default new Vuex.Store({
-  state: {
-    ...defaultState,
-    allUpgrades: upgrades
-  },
+  state,
   mutations: {
-    increment: (state, value) => {
+    setCounter: (state, value) => {
       state.counter = state.counter + value;
     },
-    setOwnedItem: (state, value) => {
-      state.owned.push(value);
+    updateUpgrade: (state, value) => {
+      state.upgrades = state.upgrades.map(u => (u.id === value.id ? value : u));
     },
-    hitsPerSecond: (state, value) => {
+    setHitsPerSecond: (state, value) => {
       state.hitsPerSecond = value;
     }
   },
   actions: {
-    buy: ({ commit, state, getters }, upgrade) => {},
+    buy: ({ commit, getters }, upgrade) => {
+      commit("updateUpgrade", {
+        ...upgrade,
+        count: upgrade.count + 1,
+        price: Math.floor(upgrade.price * 1.2)
+      });
+      const hitsPerSecond = getters.ownedUpgrades.reduce(
+        (accumulator, upgrade) => accumulator + upgrade.gain * upgrade.count,
+        0
+      );
+      commit("setHitsPerSecond", hitsPerSecond);
+      commit("setCounter", -upgrade.price);
+    },
     incrementBy: ({ commit }, payload) => {
-      commit("increment", payload);
+      commit("setCounter", payload);
     },
     updateCounter: ({ state, commit }) => {
-      commit("increment", state.hitsPerSecond);
+      commit("setCounter", state.hitsPerSecond);
     },
     saveGame: ({ state }) => {
       localStorage.setItem("game", JSON.stringify(state));
@@ -46,14 +51,9 @@ export default new Vuex.Store({
     count: state => {
       return state.counter;
     },
-    getUpgradeById: state => id => state.allUpgrades.find(u => u.id === id),
-    ownedUpgrades: state =>
-      state.allUpgrades
-        .filter(({ id }) => state.owned.map(o => o.id).includes(id))
-        .map(ownedUpgrade => ({
-          ...ownedUpgrade,
-          count: state.owned.find(owned => owned.id === ownedUpgrade.id).count
-        })),
-    getOwnedUpgradeById: (state, getters) => id => state.allUpgrades.find(u => u.id === id)
+    getUpgradeById: state => id => state.upgrades.find(u => u.id === id),
+    allUpgrades: state => state.upgrades,
+    hitsPerSecond: state => state.hitsPerSecond,
+    ownedUpgrades: state => state.upgrades.filter(u => u.count > 0)
   }
 });
